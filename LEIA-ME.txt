@@ -1,0 +1,48 @@
+NÚCLEO ABISSAL — COMO PUBLICAR (GitHub + Render)
+
+1) Suba estes arquivos na RAIZ de um repositório do GitHub (todos juntos, na mesma pasta):
+   index.html, server.js, package.json, .gitignore
+
+2) No Render: New + > Web Service > conecte o repositório
+   - Runtime: Node
+   - Build Command: npm install
+   - Start Command: npm start
+   - Health Check Path (opcional): /health
+
+3) Quando terminar o deploy, abra a URL do Render (https://SEU-APP.onrender.com).
+   O jogo já abre apontando para o próprio servidor: MULTIPLAYER > CRIAR SALA.
+
+Se hospedar o index.html em outro lugar (ex.: GitHub Pages), edite no index.html:
+   const SERVER_URL='';   ->   const SERVER_URL='wss://SEU-APP.onrender.com';
+
+Obs.: no plano grátis do Render o servidor "dorme" após ~15 min sem uso; o primeiro acesso demora cerca de 1 minuto.
+
+CONTROLES NOVOS
+PC:     X agachar · E loja · C slide (3 cargas) · 1-7 armas · botão direito mira (Sniper: luneta)
+Mobile: botões AGACH., MIRA, LOJA e ⛶ (tela cheia) · empurre o analógico ao máximo para correr ·
+        o botão FOGO executa finalização quando houver alvo elegível mirado
+Todos os botões mobile podem ser movidos em: Menu > PERSONALIZAR CONTROLES MOBILE
+Opções > Sens. ao mirar (zoom), Sens. do toque e Contador de FPS.
+
+NOVIDADES (atualização avançada)
+Loja de suprimentos (corredor, lado direito): kits de vida +25/+60/+100, vida máxima, armadura, munição e recarga.
+Terminal de armas (corredor, lado esquerdo): melhorias específicas para cada uma das 7 armas, com efeito real nos números da arma.
+Use E (PC) ou o botão USAR (celular) perto da loja ou do terminal. Ambos usam as mesmas moedas.
+Estatísticas no canto inferior esquerdo (dano causado e eliminações). Modo espectador ao morrer.
+Obs.: loja e terminais funcionam no modo solo; no multiplayer ainda não.
+
+ATUALIZAÇÃO (correções e otimização — etapa 1)
+- Loja/terminal no PC: a tecla E abria e fechava a interface no mesmo toque (dois listeners no mesmo evento). Corrigido.
+- Mobile: o botão FOGO agora vira ATIRAR / EXECUTAR / INTERAGIR conforme a situação (o botão USAR separado foi removido).
+- Opções > Tamanho do HUD de combate (0.7x a 1.5x), salvo automaticamente.
+- Otimização: limpeza de inimigos removidos agora roda a cada 0,5 s (antes rodava todo frame durante 1 s a cada 2 s).
+
+ATUALIZAÇÃO (redesenho 3D dos inimigos)
+- Todos os 11 inimigos (Diabrete, Atirador, Bruto, Titã, Cacodemônio, Predador, Artilheiro, Ciberdemônio, Mente-Aranha, Barão, Ícone) ganharam modelos 3D novos, cada um com silhueta própria:
+  músculos, placas de armadura, chifres, espinhos, garras, dentes, ossos e peças mecânicas, com texturas procedurais de pele, osso, carne e metal.
+- Os chefes têm estruturas mais complexas (caixa torácica com núcleo ardente, chifres de carneiro, caudas, lança-foguetes, metralhadoras rotativas, halo de espinhos, asas de lâminas).
+- Animações novas: passada com peso (joelhos/cotovelos), balanço de tronco e quadril, cabeça que acompanha o jogador, preparação e recuo de golpes, reação a dano, atordoamento, pose de morte, caudas e tentáculos.
+- Passos de chefes grandes agora também dão um leve "afundar" da câmera (só posição vertical; mira e controle não são afetados). Respeita a opção de tremor de tela.
+- Caudas dos chefes recuam automaticamente quando há parede atrás, para não atravessar.
+- Hitboxes, colisões, IA, armas e dano ficaram intactos. Só o visual e a animação mudaram.
+- Desempenho: cada criatura é uma geometria mesclada (cache por tipo, sem recriar a cada spawn), ~1 a 3 mil triângulos por inimigo.
